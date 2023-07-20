@@ -89,11 +89,7 @@ const login = (req, res, next) => {
 // Получение всех пользователей
 const getUsers = (req, res, next) => {
   UserModel.find({})
-    // .orFail(new ValidationError('Некорректный запрос'))
-    .orFail(() => {
-      console.log('sdsdfsdfsd');
-      throw new ValidationError('Некорректный запрос');
-    })
+    .orFail(new ValidationError('Некорректный запрос'))
     .then((users) => {
       res.status(200).send(users);
     })
