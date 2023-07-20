@@ -9,19 +9,18 @@ const mongoose = require('mongoose');
 // const helmet = require('helmet');
 // const cors = require('cors'); // модуль CORS (В ПР15 была мидлвара)
 // const { errors } = require('celebrate');
-// const rateLimit = require('express-rate-limit');
 
 const router = require('./routes'); // Файл index берется по-умолчанию, указывать не надо
 
 const { errorHandler } = require('./middlewares/error'); // Моя обработка ошибок
 // const { requestLogger, errorLogger } = require('./middlewares/logger'); // Логгеры
 
-// const { limiter } = require('./utils/limiter'); // Подключение и настройки rate-limiter
 const {
   MONGO_DB, // URL Базы данных
   PORT, // Порт подключения
   // allowedCors, // URL для CORS
-} = require('./utils/utils');
+  // limiter, // Подключение и настройки rate-limiter
+} = require('./utils/config');
 
 const app = express();
 
