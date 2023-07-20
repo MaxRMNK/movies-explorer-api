@@ -15,6 +15,7 @@ const router = require('./routes'); // Файл index берется по-умо
 const { errorHandler } = require('./middlewares/error'); // Моя обработка ошибок
 // const { requestLogger, errorLogger } = require('./middlewares/logger'); // Логгеры
 
+// const { limiter } = require('./utils/limiter'); // Подключение и настройки rate-limiter
 const {
   MONGO_DB, // URL Базы данных
   PORT, // Порт подключения

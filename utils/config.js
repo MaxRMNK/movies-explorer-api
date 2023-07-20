@@ -1,6 +1,6 @@
 // Файл конфигурации. Собраны все настройки
 
-const rateLimit = require('express-rate-limit'); // Подключение модуля rate-limit
+// const rateLimit = require('express-rate-limit'); // Подключение модуля rate-limit
 
 // Ключ для генерации и проверки токена
 const { NODE_ENV, SECRET_KEY_ENV, MONGO_DB_ENV } = process.env;
@@ -20,18 +20,18 @@ const allowedCors = [
   'http://localhost:3001',
 ];
 
-// Настройки модуля rate-limit
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // за 15 минут
-  max: 100, // С каждого IP можно совершать до 100 запросов на 'window' (за 15 минут)
-  // standardHeaders: true, // Информация об ограничении возвращается в заголовках 'RateLimit-*'
-  // legacyHeaders: false, // Отключить заголовки 'X-RateLimit-*'
-});
+// // Настройки модуля rate-limit
+// const limiter = rateLimit({
+//   windowMs: 15 * 60 * 1000, // за 15 минут
+//   max: 100, // С каждого IP можно совершать до 100 запросов на 'window' (за 15 минут)
+//   // standardHeaders: true, // Информация об ограничении возвращается в заголовках 'RateLimit-*'
+//   // legacyHeaders: false, // Отключить заголовки 'X-RateLimit-*'
+// });
 
 module.exports = {
   SECRET_KEY,
   PORT,
   MONGO_DB,
   allowedCors,
-  limiter,
+  // limiter,
 };

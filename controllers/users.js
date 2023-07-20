@@ -15,17 +15,13 @@ const ConflictError = require('../utils/errors/ConflictError'); // 409 Conflict
 const SALT_ROUNDS = 10; // Надежная "соль" от 12 и больше.
 const ERROR_DUPLICATE_KEY = 11000; // Ошибка, которую выдает mongo, если ключ (поле) неуникально.
 
-// -------
-
-// Роут создания пользователя
+// Создание пользователя
 const createUser = (req, res, next) => {
-  console.log('Controllers/Users.js, createUser входящий запрос', req.body);
-
   const {
     name, email, password,
   } = req.body;
-  // Чтобы отсечь пустые запросы еще до обращения к БД.
-  if (!email || !password || !name) {
+
+  if (!email || !password || !name) { // Чтобы отсечь пустые запросы еще до обращения к БД.
     throw new ValidationError('Все поля обязательны для заполнения');
     // 'Ошибка валидации, переданы некорректные данные'
   }
@@ -49,8 +45,7 @@ const createUser = (req, res, next) => {
             const errorFields = Object.keys(err.errors);
             const errorFirstField = err.errors[errorFields[0]];
 
-            if (errorFirstField) {
-              // Если ошибка поймана валидатором Схемы - берем текст из нее
+            if (errorFirstField) { // Если ошибка поймана валидатором Схемы - берем текст из нее
               next(new ValidationError(errorFirstField.message));
             } else {
               next(new ValidationError('Ошибка валидации, переданы некорректные данные'));
@@ -75,7 +70,6 @@ const login = (req, res, next) => {
     .select('+password') // Достать пароль в зону видимости
     .orFail(new UnauthorizedError('Неправильные почта или пароль 2'))
     .then((user) => Promise.all([user, bcrypt.compare(String(password), user.password)]))
-    // // return Promise.all([user, bcrypt.compare(String(password), user.password)]);
     // Делаем такую конструкцию, чтобы избавиться от вложенности .then:
     // Promise.all - передает в следующий then массив "объект пользователя" и результат
     // сравнения полученного пароля с хэшем.
@@ -92,40 +86,47 @@ const login = (req, res, next) => {
     .catch(next);
 };
 
-// -----------------------------------
-
-// Роут, путь, маршрут, эндпоинт для получения всех пользователей
+// Получение всех пользователей
 const getUsers = (req, res, next) => {
   UserModel.find({})
+    // .orFail(new ValidationError('Некорректный запрос'))
     .orFail(() => {
+      console.log('sdsdfsdfsd');
       throw new ValidationError('Некорректный запрос');
     })
     .then((users) => {
       res.status(200).send(users);
     })
-    .catch(next);
+    // .catch(next);
+    .catch((err) => { // Это все толькот для тестов. Оставить только "catch(next)".
+      if (err instanceof mongoose.Error.CastError) {
+        // Если userId не может быть преобразован в ObjectId
+        // err.name === 'CastError'
+        // next(new ValidationError('Переданы некорректные данные'));
+        next(new ValidationError('Переданы некорректные данные'));
+      } else {
+        next(err);
+      }
+    });
 };
 
-// Роут для получения информации о текущем пользователе
+// Получение информации о текущем пользователе
 const getCurrentUser = (req, res, next) => {
   const { _id } = req.user; // ID пользователя, из токена
 
   UserModel.findById(_id)
-    .orFail(() => {
-      throw new NotFoundError('Пользователь не найден');
-    })
+    .orFail(new NotFoundError('Пользователь не найден'))
     .then((user) => res.status(200).send(user))
-    // Проверка на 'CastError', как в getUserById, не нужна: В токене ID всегда корректный
     .catch(next);
 };
 
-// Роут обновления информации о пользователе - имя и описание
+// Обновление информации о пользователе
 const updateUserInfo = (req, res, next) => {
   const { _id } = req.user; // ID пользователя, из токена
   const { name, email } = req.body;
 
   if (!name || !email) {
-    throw new ValidationError('Не корректный запрос');
+    throw new ValidationError('Некорректный запрос');
   }
 
   UserModel.findByIdAndUpdate(
@@ -152,12 +153,3 @@ module.exports = {
   getCurrentUser,
   updateUserInfo,
 };
-
-// // В.1.: Просто отправляем токен пользователю
-// const token = signToken({ _id: user._id }); // { _id: user._id } - payload / пейлоуд
-// // До того как вынес метод jwt.sign в отдельный файл jwt-auth.js:
-// // const token = jwt.sign({ _id: user._id }, JWT.SECRET_KEY, { expiresIn: JWT.EXPIRES_IN });
-// // eslint-disable-next-line no-console
-// // console.log('Пользователь найден', token);
-
-// res.status(200).send({ token });

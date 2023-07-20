@@ -1,5 +1,5 @@
 const errorHandler = (err, req, res, next) => {
-  console.log('Ошибка:', err);
+  // console.log('Ошибка:', err);
 
   const {
     // Возможно, нужно удалить класс UnhandledError, т.к. ошибка присваевается по-умолчанию,
