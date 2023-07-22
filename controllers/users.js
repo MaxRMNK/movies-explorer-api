@@ -7,19 +7,17 @@ const { signToken } = require('../utils/jwtAuth');
 
 const ValidationError = require('../utils/errors/ValidationError'); // 400 Bad Request
 const UnauthorizedError = require('../utils/errors/UnauthorizedError'); // 401 Unauthorized
-// const ForbiddenError = require('../errors/forbidden-err'); // 403 Forbidden
+// const ForbiddenError = require('../utils/errors/ForbiddenError'); // 403 Forbidden
 const NotFoundError = require('../utils/errors/NotFoundError'); // 404 Not Found
 const ConflictError = require('../utils/errors/ConflictError'); // 409 Conflict
-// const UnhandledError = require('../errors/unhandled-err'); // 500 Internal Server Error
+// const UnhandledError = require('../utils/errors/UnhandledError'); // 500 Internal Server Error
 
 const SALT_ROUNDS = 10; // Надежная "соль" от 12 и больше.
 const ERROR_DUPLICATE_KEY = 11000; // Ошибка, которую выдает mongo, если ключ (поле) неуникально.
 
 // Создание пользователя
 const createUser = (req, res, next) => {
-  const {
-    name, email, password,
-  } = req.body;
+  const { name, email, password } = req.body;
 
   if (!email || !password || !name) { // Чтобы отсечь пустые запросы еще до обращения к БД.
     throw new ValidationError('Все поля обязательны для заполнения');
@@ -81,11 +79,13 @@ const login = (req, res, next) => {
 
       const token = signToken({ _id: user._id }); // { _id: user._id } - payload / пейлоуд
       // console.log(`Вход выполнен: ${user.name} \nТокен: ${token}`);
+
       res.status(200).send({ token });
     })
     .catch(next);
 };
 
+// !!! Удалить при деплое !!!
 // Получение всех пользователей
 const getUsers = (req, res, next) => {
   UserModel.find({})

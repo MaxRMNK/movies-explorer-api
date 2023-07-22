@@ -17,18 +17,24 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Поле "пароль" должно быть заполнено'],
     // required: true,
-    // minlength: 8,
+    minlength: 6,
     select: false, // При запросе (GET) данных пользователя пароль отправляться не будет
   },
   name: {
     type: String,
     // required: true,
-    // default: 'Жак-Ив Кусто',
     minlength: [2, 'Минимальная длина имени 2 символа'],
     maxlength: [30, 'Максимальная длина имени 30 символов'],
     // minlength: 2,
     // maxlength: 30,
   },
+  // Добавление в схему ссылок на фильмы в закладках.
+  // Разобраться нужно ли, пока в ТЗ об этом ничего не видел.
+  // Искать информацию по запросу "Mongoose метод populate"
+  // bookmarks: {
+  //   type: mongoose.Schema.Types.ObjectId,
+  //   ref: 'movie',
+  // },
 });
 
 // Создание и экспорт модели

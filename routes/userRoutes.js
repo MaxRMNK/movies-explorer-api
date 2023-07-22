@@ -1,9 +1,6 @@
 const router = require('express').Router();
-// const { celebrate, Joi, Segments } = require('celebrate');
 
-// const regex = /^(https?:\/\/)(www\.)?[^\s]*$/;
-// ^(https?:\/\/)?(www\.)?[\w\d\.\-\_\~\:\/\?#\[\]@!\$&'\(\)\*\+,;=]+#?$
-
+const validation = require('../utils/validation');
 const userControllers = require('../controllers/users');
 
 // ------------------------------------------------------------
@@ -11,7 +8,7 @@ const userControllers = require('../controllers/users');
 router.get('/me', userControllers.getCurrentUser);
 
 // Роут обновления данных пользователя - имя и описание
-router.patch('/me', userControllers.updateUserInfo);
+router.patch('/me', validation.validateUpdateUser, userControllers.updateUserInfo);
 
 // Удалить роуты
 // Роут (путь, маршрут, эндпоинт) для получения пользователей
