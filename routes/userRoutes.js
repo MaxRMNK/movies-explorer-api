@@ -10,11 +10,8 @@ router.get('/me', userControllers.getCurrentUser);
 // Роут обновления данных пользователя - имя и описание
 router.patch('/me', validation.validateUpdateUser, userControllers.updateUserInfo);
 
-// Удалить роуты
+// !!! Удалить при деплое !!!
 // Роут (путь, маршрут, эндпоинт) для получения пользователей
-router.get('/', userControllers.getUsers);
-
-// // Роут для получения пользователя по ID в URL
-// router.get('/:userId', userControllers.getUserById);
+// router.get('/', userControllers.getUsers);
 
 module.exports = router;

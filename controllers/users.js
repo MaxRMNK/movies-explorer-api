@@ -87,24 +87,24 @@ const login = (req, res, next) => {
 
 // !!! Удалить при деплое !!!
 // Получение всех пользователей
-const getUsers = (req, res, next) => {
-  UserModel.find({})
-    .orFail(new ValidationError('Некорректный запрос'))
-    .then((users) => {
-      res.status(200).send(users);
-    })
-    // .catch(next);
-    .catch((err) => { // Это все толькот для тестов. Оставить только "catch(next)".
-      if (err instanceof mongoose.Error.CastError) {
-        // Если userId не может быть преобразован в ObjectId
-        // err.name === 'CastError'
-        // next(new ValidationError('Переданы некорректные данные'));
-        next(new ValidationError('Переданы некорректные данные'));
-      } else {
-        next(err);
-      }
-    });
-};
+// const getUsers = (req, res, next) => {
+//   UserModel.find({})
+//     .orFail(new ValidationError('Некорректный запрос'))
+//     .then((users) => {
+//       res.status(200).send(users);
+//     })
+//     // .catch(next);
+//     .catch((err) => { // Это все толькот для тестов. Оставить только "catch(next)".
+//       if (err instanceof mongoose.Error.CastError) {
+//         // Если userId не может быть преобразован в ObjectId
+//         // err.name === 'CastError'
+//         // next(new ValidationError('Переданы некорректные данные'));
+//         next(new ValidationError('Переданы некорректные данные'));
+//       } else {
+//         next(err);
+//       }
+//     });
+// };
 
 // Получение информации о текущем пользователе
 const getCurrentUser = (req, res, next) => {
@@ -145,7 +145,7 @@ const updateUserInfo = (req, res, next) => {
 module.exports = {
   createUser,
   login,
-  getUsers,
+  // getUsers,
   getCurrentUser,
   updateUserInfo,
 };

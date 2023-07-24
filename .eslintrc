@@ -1,7 +1,7 @@
 {
   "extends": "airbnb-base",
   "rules": {
-    // "no-useless-disable": "error", // Раскомментировать перед Пулл-реквестом
+    // "no-useless-disable": "error",
     "no-underscore-dangle": [
       "error",
       {

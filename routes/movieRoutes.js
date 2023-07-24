@@ -4,7 +4,7 @@ const validation = require('../utils/validation');
 const movieControllers = require('../controllers/movies');
 
 // ------------------------------------------------------------
-// Роут для получения информации о текущем пользователе
+// Роут для получения информации о фильмах добавленных в закладки текущим пользователем
 router.get('/', movieControllers.getMovies);
 
 // Роут добавления фильма в закладки
