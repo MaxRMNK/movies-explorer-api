@@ -1,35 +1,35 @@
 // const { celebrate, Joi, Segments } = require('celebrate');
 const { celebrate, Joi } = require('celebrate');
 
-const regexUrl = /^(https?:\/\/)?([\w.-]+)\.([a-z]{2,6}\.?)(\/[^\s]*)*\/?$/;
-// const regex = /^(https?:\/\/)(www\.)?[^\s]*$/;
-// const regex = /^(https?:\/\/)?(www\.)?[\w\d\.\-\_\~\:\/\?#\[\]@!\$&'\(\)\*\+,;=]+#?$/;
-const regexYoutubeUrl = /^(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=)|youtu\.be\/)([\w-]{11})(?:.+)?$/;
+const {
+  lengthId, regexYoutubeUrl, regexUrl, dataMessageJoi,
+  // minCharacters, maxCharacters, minPass,
+} = require('./constants');
 
 // Регистрация
 module.exports.validateCreateUser = celebrate({
   body: Joi.object().keys({
     email: Joi.string().required().email(),
-    password: Joi.string().required().min(6),
-    name: Joi.string().required().min(2).max(30),
+    password: Joi.string().required(), // .min(minPass)
+    name: Joi.string().required(), // .min(minCharacters).max(maxCharacters)
   }),
-});
+}, { messages: dataMessageJoi });
 
 // Вход
 module.exports.validateLogin = celebrate({
   body: Joi.object().keys({
     email: Joi.string().required().email(),
-    password: Joi.string().required().min(6),
+    password: Joi.string().required(), // .min(minPass)
   }),
-});
+}, { messages: dataMessageJoi });
 
 // Обновление данных профиля
 module.exports.validateUpdateUser = celebrate({
   body: Joi.object().keys({
     email: Joi.string().required().email(),
-    name: Joi.string().required().min(2).max(30),
+    name: Joi.string().required(), // .min(minCharacters).max(maxCharacters)
   }),
-});
+}, { messages: dataMessageJoi });
 
 // Добавление фильма в закладки
 module.exports.validateCreateMovie = celebrate({
@@ -42,19 +42,19 @@ module.exports.validateCreateMovie = celebrate({
     duration: Joi.number().required(),
     year: Joi.string().required(),
     description: Joi.string().required(),
-    image: Joi.string().pattern(regexUrl).required(),
+    image: Joi.string().pattern(regexUrl).required(), // .uri() - надо тестировать, странно работает
     thumbnail: Joi.string().pattern(regexUrl).required(),
     trailerLink: Joi.string().pattern(regexYoutubeUrl).required(),
   }),
-});
+}, { messages: dataMessageJoi });
 
 // Удаление фильма из закладок
 module.exports.validateDeleteMovie = celebrate({
   params: Joi.object().keys({
-    bookmarkId: Joi.string().length(24).hex().required(),
+    bookmarkId: Joi.string().length(lengthId).hex().required(),
+    // bookmarkId используется в:
+    // + movieRoutes.js
+    // + controllers/movies.js
+    // + utils/validation.js
   }),
-});
-// bookmarkId используется в:
-// + movieRoutes.js
-// + controllers/movies.js
-// + utils/validation.js
+}, { messages: dataMessageJoi });

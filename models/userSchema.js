@@ -17,14 +17,15 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Поле "пароль" должно быть заполнено'],
     // required: true,
-    minlength: 6,
+    // minlength: [6, 'Минимальная длина пароля 6 символов'],
     select: false, // При запросе (GET) данных пользователя пароль отправляться не будет
   },
   name: {
     type: String,
+    required: [true, 'Поле "имя" должно быть заполнено'],
     // required: true,
-    minlength: [2, 'Минимальная длина имени 2 символа'],
-    maxlength: [30, 'Максимальная длина имени 30 символов'],
+    // minlength: [2, 'Минимальная длина имени 2 символа'],
+    // maxlength: [30, 'Максимальная длина имени 30 символов'],
     // minlength: 2,
     // maxlength: 30,
   },

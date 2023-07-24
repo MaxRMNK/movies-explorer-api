@@ -5,10 +5,10 @@ const ValidationError = require('../utils/errors/ValidationError'); // 400 Bad R
 // const UnauthorizedError = require('../utils/errors/UnauthorizedError'); // 401 Unauthorized
 const ForbiddenError = require('../utils/errors/ForbiddenError'); // 403 Forbidden
 const NotFoundError = require('../utils/errors/NotFoundError'); // 404 Not Found
-// const ConflictError = require('../utils/errors/ConflictError'); // 409 Conflict
+const ConflictError = require('../utils/errors/ConflictError'); // 409 Conflict
 // const UnhandledError = require('../utils/errors/UnhandledError'); // 500 Internal Server Error
 
-// const ERROR_DUPLICATE_KEY = 11000; // Ошибка, которую выдает mongo, если ключ (поле) неуникально.
+const ERROR_DUPLICATE_KEY = 11000; // Ошибка, которую выдает mongo, если ключ (поле) неуникально.
 
 // Роут получения всех сохраненных фильмов
 const getMovies = (req, res, next) => {
@@ -32,10 +32,9 @@ const createMovie = (req, res, next) => {
   movieModel.create({ owner: _id, ...req.body })
     .then((movie) => res.status(201).send(movie))
     .catch((err) => {
-      // if (err.code === ERROR_DUPLICATE_KEY) { // 11000
-      //   next(new ConflictError('Такой фильм уже добавлен в сохраненные'));
-      // } else
-      if (err instanceof mongoose.Error.ValidationError) {
+      if (err.code === ERROR_DUPLICATE_KEY) { // 11000
+        next(new ConflictError('Такой фильм уже добавлен в сохраненные'));
+      } else if (err instanceof mongoose.Error.ValidationError) {
         // Выловим первую ошибку валидатора из Схемы. С остальными разберемся потом.
         const errorFields = Object.keys(err.errors);
         const errorFirstField = err.errors[errorFields[0]];

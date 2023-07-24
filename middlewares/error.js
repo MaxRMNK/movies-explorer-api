@@ -1,6 +1,4 @@
 const errorHandler = (err, req, res, next) => {
-  // console.log('Ошибка:', err);
-
   const {
     // Возможно, нужно удалить класс UnhandledError, т.к. ошибка присваевается по-умолчанию,
     // и все данные для нее задаются здесь. Либо, данные для подстановки здесь брать из класса?
@@ -9,7 +7,6 @@ const errorHandler = (err, req, res, next) => {
   } = err;
 
   res.status(statusCode).send({ message });
-
   next();
 };
 
