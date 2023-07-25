@@ -12,6 +12,6 @@ router.patch('/me', validation.validateUpdateUser, userControllers.updateUserInf
 
 // !!! Удалить при деплое !!!
 // Роут (путь, маршрут, эндпоинт) для получения пользователей
-// router.get('/', userControllers.getUsers);
+router.get('/', userControllers.getUsers);
 
 module.exports = router;

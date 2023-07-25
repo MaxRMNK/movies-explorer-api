@@ -87,24 +87,24 @@ const login = (req, res, next) => {
 
 // !!! Удалить при деплое !!!
 // Получение всех пользователей
-// const getUsers = (req, res, next) => {
-//   UserModel.find({})
-//     .orFail(new ValidationError('Некорректный запрос'))
-//     .then((users) => {
-//       res.status(200).send(users);
-//     })
-//     // .catch(next);
-//     .catch((err) => { // Это все толькот для тестов. Оставить только "catch(next)".
-//       if (err instanceof mongoose.Error.CastError) {
-//         // Если userId не может быть преобразован в ObjectId
-//         // err.name === 'CastError'
-//         // next(new ValidationError('Переданы некорректные данные'));
-//         next(new ValidationError('Переданы некорректные данные'));
-//       } else {
-//         next(err);
-//       }
-//     });
-// };
+const getUsers = (req, res, next) => {
+  UserModel.find({})
+    .orFail(new ValidationError('Некорректный запрос'))
+    .then((users) => {
+      res.status(200).send(users);
+    })
+    // .catch(next);
+    .catch((err) => { // Это все толькот для тестов. Оставить только "catch(next)".
+      if (err instanceof mongoose.Error.CastError) {
+        // Если userId не может быть преобразован в ObjectId
+        // err.name === 'CastError'
+        // next(new ValidationError('Переданы некорректные данные'));
+        next(new ValidationError('Переданы некорректные данные'));
+      } else {
+        next(err);
+      }
+    });
+};
 
 // Получение информации о текущем пользователе
 const getCurrentUser = (req, res, next) => {
@@ -130,12 +130,23 @@ const updateUserInfo = (req, res, next) => {
     { name, email },
     { new: true, runValidators: true }, // обработчик then получит на вход обновленную запись
   )
+    // .orFail(new NotFoundError('Пользователь не найден'))
     .then((user) => {
       res.status(200).send(user);
     })
     .catch((err) => {
-      if (err instanceof mongoose.Error.ValidationError) {
-        next(new ValidationError('Ошибка валидации, переданы некорректные данные'));
+      if (err.code === ERROR_DUPLICATE_KEY) { // 11000
+        next(new ConflictError('Такой пользователь уже существует'));
+      } else if (err instanceof mongoose.Error.ValidationError) {
+        // Выловим первую ошибку валидатора из Схемы. С остальными разберемся потом.
+        const errorFields = Object.keys(err.errors);
+        const errorFirstField = err.errors[errorFields[0]];
+
+        if (errorFirstField) { // Если ошибка поймана валидатором Схемы - берем текст из нее
+          next(new ValidationError(errorFirstField.message));
+        } else {
+          next(new ValidationError('Ошибка валидации, переданы некорректные данные'));
+        }
       } else {
         next(err);
       }
@@ -145,7 +156,7 @@ const updateUserInfo = (req, res, next) => {
 module.exports = {
   createUser,
   login,
-  // getUsers,
+  getUsers,
   getCurrentUser,
   updateUserInfo,
 };

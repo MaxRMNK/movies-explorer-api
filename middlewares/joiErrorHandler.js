@@ -1,9 +1,12 @@
+const { CelebrateError } = require('celebrate');
+
 const ValidationError = require('../utils/errors/ValidationError'); // 400 Bad Request
 
 // Middleware для обработки ошибок Celebrate и Joi.
 // Меняет стандартный формат в котором Celebrate отдает ошибку пользователю.
 const joiErrorHandler = (err, req, res, next) => {
-  if (err.message === 'Validation failed') {
+  if (err instanceof CelebrateError) {
+    // if (err.message === 'Validation failed') { // Было
     // console.log('*Celebrate Error*');
     // console.log(err);
 
