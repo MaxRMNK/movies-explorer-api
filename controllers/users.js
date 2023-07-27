@@ -85,7 +85,7 @@ const login = (req, res, next) => {
     .catch(next);
 };
 
-// !!! Удалить при деплое !!!
+// !!! Удалить при деплое
 // Получение всех пользователей
 const getUsers = (req, res, next) => {
   UserModel.find({})

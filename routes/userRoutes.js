@@ -10,7 +10,7 @@ router.get('/me', getCurrentUser);
 // Роут обновления данных пользователя - имя и описание
 router.patch('/me', validateUpdateUser, updateUserInfo);
 
-// !!! Удалить при деплое !!!
+// !!! Удалить при деплое
 // Роут (путь, маршрут, эндпоинт) для получения пользователей
 router.get('/', getUsers);
 
