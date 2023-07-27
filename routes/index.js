@@ -1,7 +1,7 @@
 const router = require('express').Router();
 
 const { auth } = require('../middlewares/auth');
-const validation = require('../utils/validation');
+const { validateCreateUser, validateLogin } = require('../utils/validation');
 
 const { createUser, login } = require('../controllers/users');
 const userRoutes = require('./userRoutes');
@@ -9,13 +9,16 @@ const movieRoutes = require('./movieRoutes');
 
 const NotFoundError = require('../utils/errors/NotFoundError'); // 404 Not Found
 
-router.post('/signup', validation.validateCreateUser, createUser); // Роут регистрации
-router.post('/signin', validation.validateLogin, login); // Роут входа
+router.post('/signup', validateCreateUser, createUser); // Роут регистрации
+router.post('/signin', validateLogin, login); // Роут входа
 
-// router.use('/users', userRoutes); // Защищено авторизацией
-router.use('/users', auth, userRoutes); // Защищено авторизацией
-router.use('/movies', auth, movieRoutes); // Защищено авторизацией
+router.use(auth); // Все роуты идущие после будут доступны только авторизованным пользователям
 
+router.use('/users', userRoutes);
+router.use('/movies', movieRoutes);
+
+// ХЗ зачем закрывать от неавторизированных пользователей страницу 404,
+// но по меннию ревьюера так надо.
 router.use((req, res, next) => next(new NotFoundError('Страница не найдена')));
 // router.use('*', (req, res, next) => next(new NotFoundError('Страница не найдена 111')));
 
@@ -27,7 +30,8 @@ router.use((req, res, next) => next(new NotFoundError('Страница не н�
 // router.use('/users', userRoutes);
 // router.use(userRoutes);
 
-// Так все роуты идущие после будут доступны только авторизованным пользователям
-// router.use(auth);
+// Так будут защищены авторизацией только указанные роуты
+// router.use('/users', auth, userRoutes); // Защищено авторизацией
+// router.use('/movies', auth, movieRoutes); // Защищено авторизацией
 
 module.exports = router;

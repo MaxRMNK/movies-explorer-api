@@ -1,17 +1,17 @@
 const router = require('express').Router();
 
-const validation = require('../utils/validation');
-const movieControllers = require('../controllers/movies');
+const { validateCreateMovie, validateDeleteMovie } = require('../utils/validation');
+const { getMovies, createMovie, deleteMovie } = require('../controllers/movies');
 
 // ------------------------------------------------------------
 // Роут для получения информации о фильмах добавленных в закладки текущим пользователем
-router.get('/', movieControllers.getMovies);
+router.get('/', getMovies);
 
 // Роут добавления фильма в закладки
-router.post('/', validation.validateCreateMovie, movieControllers.createMovie);
+router.post('/', validateCreateMovie, createMovie);
 
 // Роут удаления фильма из закладок
-router.delete('/:bookmarkId', validation.validateDeleteMovie, movieControllers.deleteMovie);
+router.delete('/:bookmarkId', validateDeleteMovie, deleteMovie);
 // Название bookmarkId (строка=>объект) выбрано чтобы не путать с полем Схемы movieId (число!),
 // которое приходит вместе с другими данными фильма и сохраняется в БД под этим (movieId) именем.
 // bookmarkId используется в:

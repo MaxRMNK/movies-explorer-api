@@ -37,7 +37,7 @@ const createUser = (req, res, next) => {
         })
         .catch((err) => {
           if (err.code === ERROR_DUPLICATE_KEY) { // 11000
-            next(new ConflictError('Такой пользователь уже существует'));
+            next(new ConflictError('Пользователь с таким email уже существует'));
           } else if (err instanceof mongoose.Error.ValidationError) {
             // Выловим первую ошибку валидатора из Схемы. С остальными разберемся потом.
             const errorFields = Object.keys(err.errors);
@@ -93,17 +93,17 @@ const getUsers = (req, res, next) => {
     .then((users) => {
       res.status(200).send(users);
     })
-    // .catch(next);
-    .catch((err) => { // Это все толькот для тестов. Оставить только "catch(next)".
-      if (err instanceof mongoose.Error.CastError) {
-        // Если userId не может быть преобразован в ObjectId
-        // err.name === 'CastError'
-        // next(new ValidationError('Переданы некорректные данные'));
-        next(new ValidationError('Переданы некорректные данные'));
-      } else {
-        next(err);
-      }
-    });
+    // .catch((err) => { // Это все только для тестов. Оставить только "catch(next)".
+    //   if (err instanceof mongoose.Error.CastError) {
+    //     // Если userId не может быть преобразован в ObjectId
+    //     // err.name === 'CastError'
+    //     // next(new ValidationError('Переданы некорректные данные'));
+    //     next(new ValidationError('Переданы некорректные данные'));
+    //   } else {
+    //     next(err);
+    //   }
+    // });
+    .catch(next);
 };
 
 // Получение информации о текущем пользователе
@@ -136,7 +136,7 @@ const updateUserInfo = (req, res, next) => {
     })
     .catch((err) => {
       if (err.code === ERROR_DUPLICATE_KEY) { // 11000
-        next(new ConflictError('Такой пользователь уже существует'));
+        next(new ConflictError('Пользователь с таким email уже существует'));
       } else if (err instanceof mongoose.Error.ValidationError) {
         // Выловим первую ошибку валидатора из Схемы. С остальными разберемся потом.
         const errorFields = Object.keys(err.errors);

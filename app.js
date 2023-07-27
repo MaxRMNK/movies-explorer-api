@@ -23,6 +23,10 @@ const {
   MONGO_DB, // URL Базы данных
   PORT, // Порт подключения
   allowedCors, // URL для CORS
+  // NODE_ENV,
+  // PORT_ENV,
+  // SECRET_KEY_ENV,
+  // MONGO_DB_ENV,
 } = require('./utils/config');
 
 const app = express();
@@ -50,4 +54,8 @@ app.use(errorHandler); // Централизованный обработчик 
 app.listen(PORT, () => {
   // eslint-disable-next-line no-console
   console.log(`Приложение прослушивает порт ${PORT}`); // App listening on port ${PORT}
+  // console.log(`NODE_ENV ${NODE_ENV}`);
+  // console.log(`PORT_ENV ${PORT_ENV}`);
+  // console.log(`SECRET_KEY_ENV ${SECRET_KEY_ENV}`);
+  // console.log(`MONGO_DB_ENV ${MONGO_DB_ENV}`);
 });

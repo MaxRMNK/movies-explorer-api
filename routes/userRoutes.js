@@ -1,17 +1,17 @@
 const router = require('express').Router();
 
-const validation = require('../utils/validation');
-const userControllers = require('../controllers/users');
+const { validateUpdateUser } = require('../utils/validation');
+const { getCurrentUser, updateUserInfo, getUsers } = require('../controllers/users');
 
 // ------------------------------------------------------------
 // Роут для получения информации о текущем пользователе
-router.get('/me', userControllers.getCurrentUser);
+router.get('/me', getCurrentUser);
 
 // Роут обновления данных пользователя - имя и описание
-router.patch('/me', validation.validateUpdateUser, userControllers.updateUserInfo);
+router.patch('/me', validateUpdateUser, updateUserInfo);
 
 // !!! Удалить при деплое !!!
 // Роут (путь, маршрут, эндпоинт) для получения пользователей
-router.get('/', userControllers.getUsers);
+router.get('/', getUsers);
 
 module.exports = router;
