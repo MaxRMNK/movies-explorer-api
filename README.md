@@ -29,6 +29,6 @@ delete `/movies/:bookmarkId` — Удаление фильма из заклад
 
 ## Ссылки на проект
 
-IP 158.160.61.192  
+IP 84.201.135.155
 
 Backend https://api.diplom.maxrmnk.nomoredomains.xyz  

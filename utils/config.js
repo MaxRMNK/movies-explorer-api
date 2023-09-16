@@ -15,6 +15,7 @@ const { // Если файла .env нет или там нет этих пер�
 
 // Режим DEV
 const PORT_DEV = 3000;
+// const PORT_DEV = 3001;
 const SECRET_KEY_DEV = 'dev-secret-key'; // Cекретный ключ для режима разработки
 const MONGO_DB_DEV = 'mongodb://127.0.0.1:27017/bitfilmsdb'; // WebServer
 // const MONGO_DB_DEV = 'mongodb://localhost:27017/bitfilmsdb'; // localhost
@@ -27,7 +28,8 @@ const MONGO_DB = NODE_ENV === 'production' ? MONGO_DB_ENV : MONGO_DB_DEV;
 
 // Домены, с которых разрешены кросс-доменные запросы для модуля cors (или мидлвары cors.js)
 const allowedCors = [
-  'http://localhost:3000',
+  'https://diplom.maxrmnk.nomoredomainsrocks.ru',
+  // 'http://localhost:3000',
   // 'http://localhost:3001',
 ];
 

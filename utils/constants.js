@@ -7,7 +7,9 @@
 // const minPass = 6;
 module.exports.lengthId = 24;
 
-module.exports.regexYoutubeUrl = /^(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=)|youtu\.be\/)([\w-]{11})(?:.+)?$/;
+// eslint-disable-next-line max-len
+// module.exports.regexYoutubeUrl = /^(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=)|youtu\.be\/)([\w-]{11})(?:.+)?$/;
+module.exports.regexYoutubeUrl = /^(https?:\/\/)?([\w.-]+)\.([a-z]{2,6}\.?)(\/[^\s]*)*\/?$/;
 module.exports.regexUrl = /^(https?:\/\/)?([\w.-]+)\.([a-z]{2,6}\.?)(\/[^\s]*)*\/?$/;
 // const regex = /^(https?:\/\/)(www\.)?[^\s]*$/;
 // const regex = /^(https?:\/\/)?(www\.)?[\w\d\.\-\_\~\:\/\?#\[\]@!\$&'\(\)\*\+,;=]+#?$/;
