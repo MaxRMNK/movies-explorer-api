@@ -29,8 +29,9 @@ const MONGO_DB = NODE_ENV === 'production' ? MONGO_DB_ENV : MONGO_DB_DEV;
 // Домены, с которых разрешены кросс-доменные запросы для модуля cors (или мидлвары cors.js)
 const allowedCors = [
   'https://diplom.maxrmnk.nomoredomainsrocks.ru',
+  'http://diplom.maxrmnk.nomoredomainsrocks.ru',
   // 'http://localhost:3000',
-  // 'http://localhost:3001',
+  // 'https://localhost:3000',
 ];
 
 // Читать еще - разбираться нужны ли эти настройки или в app.js достаточно указать просто cors()
