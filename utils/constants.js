@@ -4,7 +4,7 @@
 // Для Валидации celebrate - utils/validation.js
 // const minCharacters = 2;
 // const maxCharacters = 30;
-// const minPass = 6;
+// const minPass = 6; // Это не работает, т.к. в БД попадает уже хэш
 module.exports.lengthId = 24;
 
 // eslint-disable-next-line max-len
